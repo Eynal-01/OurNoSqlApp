@@ -1,0 +1,63 @@
+﻿<html>
+<body>
+    <h2>
+        Save Picture
+    </h2>
+
+    <form asp-action="Upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="picture" />
+        <button class="btn btn-primary" type="submit"> Save</button>
+    </form>
+
+    <h2>Logs</h2>
+    @foreach (var item in ViewBag.logs as List<string>)
+    {
+        <strong>@item</strong>
+        <br />
+    }
+
+    <h2>
+        Pictures
+    </h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <td>Picture</td>
+            <td>Name</td>
+            <td>Actions</td>
+        </tr>
+
+        @foreach (var item in ViewBag.blobs as List<FileBlob>)
+        {
+            <tr>
+                <td>
+                    <img src="@item.Url" class="img-thumbnail" style="width:100px;" />
+                </td>
+                <td id="namee">
+                    @item.Name
+                </td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Download" asp-route-filename="@item.Name">Download</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-filename="@item.Name">Delete</a>
+                    @if (item.Name.Contains("pdf"))
+                    {
+                        <a class="btn btn-primary" id="show">Show</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <iframe style="visibility:visible" src="https://storagetask123.blob.core.windows.net/pdfs/fcd7090b-f1fe-4e15-ba8b-c48b01e8bded.pdf" id="pdfViewer" title="pdfTitle" frameborder="0"></iframe>
+</body>
+</html>
+
+<script>
+    document.getElementById("show").addEventListener("click", function () {
+        var name = document.getElementById("namee").textContent.trim();
+        var link = "https://storagetask123.blob.core.windows.net/pdfs/";
+        var pdfurl = link + name;
+        console.log(pdfurl);
+        document.getElementById("pdfViewer").src = pdfurl;
+    });
+</script>

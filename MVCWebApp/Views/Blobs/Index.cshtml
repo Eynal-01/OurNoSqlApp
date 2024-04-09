@@ -29,7 +29,7 @@
 
         @foreach (var item in ViewBag.blobs as List<FileBlob>)
         {
-            <tr>
+            <tr id="@item.Name"> 
                 <td>
                     <img src="@item.Url" class="img-thumbnail" style="width:100px;" />
                 </td>
@@ -39,25 +39,32 @@
                 <td>
                     <a class="btn btn-warning" asp-action="Download" asp-route-filename="@item.Name">Download</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-filename="@item.Name">Delete</a>
-                    @if (item.Name.Contains("pdf"))
-                    {
-                        <a class="btn btn-primary" id="show">Show</a>
-                    }
                 </td>
             </tr>
         }
     </table>
 
-    <iframe style="visibility:visible" src="https://storagetask123.blob.core.windows.net/pdfs/fcd7090b-f1fe-4e15-ba8b-c48b01e8bded.pdf" id="pdfViewer" title="pdfTitle" frameborder="0"></iframe>
+    <iframe id="pdfViewer" style="width:50%; height:50vh"></iframe>
+
+
 </body>
 </html>
 
+
 <script>
-    document.getElementById("show").addEventListener("click", function () {
-        var name = document.getElementById("namee").textContent.trim();
-        var link = "https://storagetask123.blob.core.windows.net/pdfs/";
-        var pdfurl = link + name;
-        console.log(pdfurl);
-        document.getElementById("pdfViewer").src = pdfurl;
+    // Get all <tr> elements
+    var rows = document.querySelectorAll("tr");
+
+    // Add click event listener to each <tr> element
+    rows.forEach(function (row) {
+        row.addEventListener("click", function () {
+            // Get the name of the PDF from the id attribute of the <tr> element
+            var pdfName = this.id + "&embedded=true";
+            var link = "https://docs.google.com/viewer?url=https://storagetask123.blob.core.windows.net/pdfs/";
+            var pdfUrl = link + pdfName; // Assuming the PDF file extension is ".pdf"
+            console.log(pdfUrl);
+            // Set the src attribute of the iframe to display the PDF
+            document.getElementById("pdfViewer").src = pdfUrl;
+        });
     });
 </script>

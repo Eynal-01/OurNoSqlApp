@@ -29,7 +29,7 @@
 
         @foreach (var item in ViewBag.blobs as List<FileBlob>)
         {
-            <tr id="@item.Name"> 
+            <tr id="@item.Name">
                 <td>
                     <img src="@item.Url" class="img-thumbnail" style="width:100px;" />
                 </td>
@@ -43,27 +43,19 @@
             </tr>
         }
     </table>
-
     <iframe id="pdfViewer" style="width:50%; height:50vh"></iframe>
-
-
 </body>
 </html>
 
 
 <script>
-    // Get all <tr> elements
     var rows = document.querySelectorAll("tr");
-
-    // Add click event listener to each <tr> element
     rows.forEach(function (row) {
         row.addEventListener("click", function () {
-            // Get the name of the PDF from the id attribute of the <tr> element
             var pdfName = this.id + "&embedded=true";
             var link = "https://docs.google.com/viewer?url=https://storagetask123.blob.core.windows.net/pdfs/";
-            var pdfUrl = link + pdfName; // Assuming the PDF file extension is ".pdf"
+            var pdfUrl = link + pdfName;
             console.log(pdfUrl);
-            // Set the src attribute of the iframe to display the PDF
             document.getElementById("pdfViewer").src = pdfUrl;
         });
     });
